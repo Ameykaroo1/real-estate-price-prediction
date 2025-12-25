@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To-do list</title>
+  <link rel="stylesheet" href="To-do.css">
+</head>
+<body>
+  <img src="bluetick.png" alt="" class="tick">
+  <h1 class="heading">My todo List</h1>
+  <h3 class="sub-heading">1 of 3 task complete</h3>
+
+  
+  <div class="input-container">
+    <div class="task-level">
+      <input type="text" class="add-task" placeholder="Add a Task">
+      <select name="level" id="level">
+        <option value="Low">Low</option>
+        <option value="Medium" selected>Medium</option>
+        <option value="High">High</option>
+      </select>
+    </div>
+    <div class="date-addtask">
+      <img src="calender.svg" alt="" class="cal">
+      <input type="date" class="date">
+      <button class="add-task-btn">+ Add Task</button>
+    </div>
+  </div>
+
+
+  <div class="search-container">
+    <input type="text" class="search-bar"  placeholder="Search task">
+    <img src="arrowup.svg" alt="" class="arrowup">
+    <select name="sort" id="sort">
+      <option value="Date Created" selected>Date Created</option>
+      <option value="Due Date">Due Date</option>
+      <option value="Priority">Priority</option>
+      <option value="A-Z">A-Z</option>
+    </select>
+  </div>
+
+
+  <div class="completion">
+    <div class="slidebar">
+      <button class="all"> All </button>
+      <button class="active"> Active </button>
+      <button class="completed"> Completed </button>
+    </div>
+  </div>
+
+
+  <div class="task-bar"></div>
+  <script src="To-do.js"></script>
+</body>
+</html>
