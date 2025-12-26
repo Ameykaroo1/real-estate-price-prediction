@@ -3,12 +3,18 @@ const inputTask = document.querySelector(".add-task")
 const levelDropdown = document.querySelector("#level")
 const date = document.querySelector(".date")
 const taskBar = document.querySelector(".task-bar")
+const sort = document.querySelector("#sort")
+const allBtn = document.querySelector(".all");
+const activeBtn = document.querySelector(".active");
+const completedBtn = document.querySelector(".completed");
+const slider = document.querySelector(".slider");
+
 
 addbtn.addEventListener("click",()=>{
   const taskText = inputTask.value
-  const levelText = level.options[level.selectedIndex].text
-  const taskdate = date.value
-
+  const levelText =
+  levelDropdown.options[levelDropdown.selectedIndex].text
+  const taskdate = date.value;
 
   if (taskText.trim() === ""){
     alert("Please Enter a task")
@@ -17,6 +23,10 @@ addbtn.addEventListener("click",()=>{
 
   const taskDiv = document.createElement("div");
   taskDiv.classList.add("task1");
+  taskDiv.dataset.text = taskText.toLowerCase();
+  taskDiv.dataset.priority = levelText;
+  taskDiv.dataset.date = taskdate || "";
+  taskDiv.dataset.created = Date.now();
 
   // step 2: create task text
   const taskPara = document.createElement("p");
@@ -53,6 +63,8 @@ addbtn.addEventListener("click",()=>{
 
   // clear input
   inputTask.value = "";
+  date.value = "";
+
 
   //delete button 
   del.addEventListener("click",()=>{
@@ -76,7 +88,7 @@ addbtn.addEventListener("click",()=>{
     if(edit.innerText === "Save"){
       taskPara.innerText=editInput.value
       taskDiv.replaceChild(taskPara,editInput)
-      edit.innerText === "Edit"
+      edit.innerText = "Edit"
       editInput=null
       return
     }
@@ -90,3 +102,89 @@ addbtn.addEventListener("click",()=>{
   })
   
 })
+
+// searching task
+const searchInput = document.querySelector(".search-bar")
+searchInput.addEventListener("input", () => {
+  const searchValue = searchInput.value.toLowerCase();
+
+  // get tasks EVERY time user types
+  const tasks = document.querySelectorAll(".task");
+
+  tasks.forEach(task => {
+    const taskText = task.innerText.toLowerCase();
+    const taskDiv = task.closest(".task1");
+
+    if (taskText.includes(searchValue)) {
+      taskDiv.style.display = "";
+    } else {
+      taskDiv.style.display = "none";
+    }
+  });
+});
+
+sort.addEventListener("change", () => {
+  const tasks = Array.from(document.querySelectorAll(".task1"));
+
+  if (sort.value === "A-Z") {
+    tasks.sort((a, b) =>
+      a.dataset.text.localeCompare(b.dataset.text)
+    );
+  }
+
+  if (sort.value === "Priority") {
+    const order = { High: 1, Medium: 2, Low: 3 };
+    tasks.sort(
+      (a, b) => order[a.dataset.priority] - order[b.dataset.priority]
+    );
+  }
+
+  if (sort.value === "Due Date") {
+    tasks.sort(
+      (a, b) => new Date(a.dataset.date) - new Date(b.dataset.date)
+    );
+  }
+
+  if (sort.value === "Date Created") {
+    tasks.sort(
+      (a, b) => a.dataset.created - b.dataset.created
+    );
+  }
+
+  // put tasks back in DOM in sorted order
+  tasks.forEach(task => taskBar.appendChild(task));
+});
+
+function getAllTasks() {
+  return document.querySelectorAll(".task1");
+}
+allBtn.addEventListener("click", () => {
+  getAllTasks().forEach(task => {
+    task.style.display = "";
+  });
+});
+activeBtn.addEventListener("click", () => {
+  getAllTasks().forEach(task => {
+    const checkbox = task.querySelector("input[type='checkbox']");
+    task.style.display = checkbox.checked ? "none" : "";
+  });
+});
+completedBtn.addEventListener("click", () => {
+  getAllTasks().forEach(task => {
+    const checkbox = task.querySelector("input[type='checkbox']");
+    task.style.display = checkbox.checked ? "" : "none";
+  });
+});
+
+function setActive(btn, index) {
+  [allBtn, activeBtn, completedBtn].forEach(b =>
+    b.classList.remove("selected")
+  );
+
+  btn.classList.add("selected");
+  slider.style.transform = `translateX(${index * 100}%)`;
+}
+
+allBtn.addEventListener("click", () => setActive(allBtn, 0));
+activeBtn.addEventListener("click", () => setActive(activeBtn, 1));
+completedBtn.addEventListener("click", () => setActive(completedBtn, 2));
