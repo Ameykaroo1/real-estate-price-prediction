@@ -133,7 +133,7 @@ sort.addEventListener("change", () => {
   }
 
   if (sort.value === "Priority") {
-    const order = { High: 1, Medium: 2, Low: 3 };
+    const order = { High: 1, Medium: 2, Low: 3 }
     tasks.sort(
       (a, b) => order[a.dataset.priority] - order[b.dataset.priority]
     );
