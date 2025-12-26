@@ -151,7 +151,7 @@ sort.addEventListener("change", () => {
     );
   }
 
-// put tasks back in DOM in sorted order
+  // put tasks back in DOM in sorted order
   tasks.forEach(task => taskBar.appendChild(task));
 });
 
